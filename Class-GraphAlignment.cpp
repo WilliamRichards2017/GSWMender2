@@ -95,9 +95,9 @@ GraphAlignment::GraphAlignment(
   //----------------------------------------------------------------------------
   // initialize scores and related quantities
   //----------------------------------------------------------------------------
-  I1M = 0;
-  I2M = 0;
-  SM = 0;
+  I1M = 0; // running row index of traceback rouute 
+  I2M = 0; // running column index of traceback route
+  SM = 0; // optimal score
 
   //----------------------------------------------------------------------------
   // build SW matrices for each consecutive subject node
@@ -116,27 +116,26 @@ GraphAlignment::GraphAlignment(
     //--------------------------------------------------------------------------
     // define and initialize score matrix and traceback matrices for this node
     //--------------------------------------------------------------------------
-    vector< vector< vector<int> > > S; // Score matrices
-    vector< vector< vector< vector<bool> > > > T; // traceback matrices
+    vector< vector< vector<int> > > S; // Score matrices for Graph nodes: inner two dimension are the row and column for each matrix; outer dimension is node serial
+    vector< vector< vector< vector<bool> > > > T; // traceback matrices for Graph nodes; inner dimenstion is 3 possible states; middle two are rows and columns; outer is node serial
    
      // initialize score matrices with all 0s
     for (int i1=0; i1<=l1; i1++) {
       vector< vector<int> > zeroVectorVector;
       for (int i2=0; i2<=l2; i2++) {
-	vector<int> zeroVector;
-	for (int i3=0; i3<=2; i3++) {
-	  zeroVector.push_back(0);
-	}
-	zeroVectorVector.push_back(zeroVector);
+	zeroVector.push_back(0);
       }
-      S.push_back(zeroVectorVector);
+      zeroVectorVector.push_back(zeroVector);
     }
     
     // initialize gap score matrices with negative numbers
     for (int i1=0; i1<=l1; i1++) {
+      // initialize top row with negative numbers that are guaranteed to be less then any observed penalty
       S[i1][0][H] = l1 * (X + GI + GE);
     }
+
     for (int i2=0; i2<=l2; i2++) {
+      // initialize left column with negative numbers that are guaranteed to be less then any observed penalty                                                                                          
       S[0][i2][V] = l2 * (X + GI + GE);
     }
     
@@ -158,7 +157,7 @@ GraphAlignment::GraphAlignment(
     }
 
     //--------------------------------------------------------------------------
-    // enforce continuity of scores from contributor  nodes in utility column
+    // enforce continuity of scores from contributor nodes in utility column
     //--------------------------------------------------------------------------
     for (vector<Node *>::const_iterator iter = contributorNodes.begin(); iter != contributorNodes.end(); iter++) {
       Node * contributorNode = * iter;
@@ -266,7 +265,8 @@ GraphAlignment::GraphAlignment(
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------
-  // initialize data
+  // initialize starting point for traceback using values updated during the
+  // score and traceback filling step
   //----------------------------------------------------------------------------
   int i1 = I1M;
   int i2 = I2M;
@@ -383,7 +383,7 @@ GraphAlignment::GraphAlignment(
       a1 = b1 + a1; // add subject base to alignment
       a2 = b2 + a2; // add quary base to alignment
       if (GT[node][i1][i2][H][D]) {state = D; s = GS[node][i1-1][i2][D];}
-      else if (GT[node][i1][i2][H][H]) {state = H; s =GS[node][i1-1][i2][H];}
+      else if (GT[node][i1][i2][H][H]) {state = H; s = GS[node][i1-1][i2][H];}
       i1--; // decrement subject index only
 
       // manage cigars
