@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <cmath>
 
+
 // "tclap" commandline parsing library
 #include <tclap/CmdLine.h>
 
@@ -32,6 +33,9 @@
 
 // include classes
 #include "Class-GraphAlignment.h"
+#include "Class-Traceback.h"
+#include "Class-Pileup.h"
+#include "ArrayUtil.h"
 
 // uses
 using namespace std; 
@@ -85,7 +89,7 @@ static string ProgramDescription("Smith-Waterman optimal alignment algorithm");
 static string ProgramVersion("0.4.1");
 static string ProgramDate("2015-04-18");
 static string ProgramDeveloper("Gabor T. Marth");
-static string ProgramInstitution("University of Utah");
+static string ProgramInstitution("University of Utah"); 
 static string ProgramCopyrightDates("2015");
 
 static vector<ArgStruct> ArgList;
@@ -95,6 +99,7 @@ static vector<ArgStruct> ArgList;
 // classes
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+
 
 class MyOutput : public StdOutput {
 public:
@@ -226,7 +231,7 @@ int main (int argc, char *argv[]) {
   arg.longId = "query"; 
   arg.description = "Query sequence";
   arg.required = false; 
-  arg.defaultValueString = "GATT"; 
+  arg.defaultValueString = "GGAATTT"; 
   arg.type = "string"; 
   arg.multi = false; 
   ArgList.push_back(arg);
@@ -454,25 +459,37 @@ int main (int argc, char *argv[]) {
   contributors4.push_back(node4);
   Node * node5 = new Node(
 			  "node5",
-			  "AGTAGTAGTCTGATCTGATGCTGATCTGATCTGATACCCACATTATGATAACATAGTCAGCTAGTCTTAGATTGGGGATCTAGCATCGAAATCGATCGATACCATTATCTACGCGATATCGATATCGTACGTAGCTAGCTAGTGCTAGCTCGCAATCGATGCATGCTAGCTGTTCAGTCGTGTGCTAGTAGTGCTAGCTTCGCGATCTAGCTGATGCTAGTCTAGCTGATCTAGCTTATTATCTATCATGCTAGTCGATGCTAGTTATTATTACGTAGCTAGTCGGCATGCTAGCTATTGCGCTATGCTAGCTATTATTACGGCATGCTAGTAGTTATGCTAGTGTACTCGATGCTAGTCGTAGTCGTAGCTGATTTACGTATCGTAGTCTAGTCGATGTTTTTCCCTTTTTTTCCTTCTTTTCCCACCCCCTCCCCCTCCATGTGAAGATTTGGGTGCTTAACATATCATTTTTTTCCCTGCCGGAATTTTAGCATTGATATGAACCATGGACAAGTATATTCTGCTGCCACAAAGACTGTAAAGTGCTTCATTTCAACAGCTGAGGCAAGCCAAGTGATCATTAATAAAGCTTTTCTTGGTTCCTTCAGTGGTGTTGGTAGTAAAATGGTAGGTAAAAGTTAGGCTGCAAGTTCAATAAACATGAGATTTCCCATCGTTACACCCTTGTGTATTCACATTTCTTGGATCAAACATTTTGAGTGAACTAGGGGTTTTTATTAAAGACATTTGTTGTATTTATGGTTGTAACTGTACATGCTTATCAGGATGAGACTGAAAGAAGGTAGGGCAAAAATGGTTGAATCTATTTTCAGATAGTAGTTCATACTTGAGTGAAGTGTCTTGTCTGCATTATGAAGCCTGGTATGTATCCAGTACTAAATAGGTGGGTTAAATGTGGTAATTCTAGTTCAGTGTCTTACCCTGAAGAGAAAGTTGTAGGTTGGCTGTTGAAATTCATTCCTTAGATATGATCAGTTTGATTGCCCGGCTTTATTGCCTTTACAGGAATGTGATACTCAGGGCTTACTCTATACACCAATGAGTCTTCTTTGATCCTAAGACCACCACTGAAGTTGTTTAGGTTTTTTGGACAAACATGATAAACTTCTTCAGATACTTTTTTTTTCCTTTGGCAGGAAGGTGTCTTGCTGCAGGTAACTAATGAAGAAGTGGTCAACCACAGAGTCTTCAAGAAATAAGAAATTCTGTACCATCTGAAAGTAGTTCTTGTTGGTGCCTTCATTTAAAAAGCACTCTTTAAAATAAAAGGGAAATGTTTTCTGATAAAACAAACATTTAGTTGAGGTCTTGATATAAAACAATTACAAAATGAGTGTTGTTTGTAAAACAGTAACATCAAATTGGCTAGAGAGATAAATGTATCATGTTTTAAATTAGGTTTTGTGAGTAGACAGATTACAATTCTATTTTAAATATAAAGTTTATAAAATAAATACTTTTTGTATCCAAATCGTACGTAGCTATTTATCGTATCGTAGTTTTGCTGATGCTGTAGTGCTGACGATGCTAGCTTTTTTTTACGTAGCTGATCAAAAAACTGTAGCTAGCTCGCGATCGTAGCTAGTTTTTTTTTCGATGCTAGCTACTACTAGTCGTACGCCGACGTATCGTACGTAGCCGGGCATCGTACGCGCGTACGTAGCTGATC",
+			  "A",
 			  contributors4
 			  );
-  subjectNodes.push_back(node5);
-  GraphAlignment * ga;
-  for (int i=1; i<=10; i++) {
-    ga = new GraphAlignment(subjectNodes, query, M, X, GI, GE, debug);
-  }
+  //  subjectNodes.push_back(node5);
+  GraphAlignment * ga = new GraphAlignment(subjectNodes, query, M, X, GI, GE, debug);
 
   cout << "Optimal score of GSW: " << ga->getScore() << endl;
   cout << "Global Cigar:" << ga->getGlobalCigar() << endl;
   cout << "Global Alignment:" << endl << ga->getGlobalAlignment() << endl;
 
+  Traceback t(ga);
+  Traceback t2(ga);
+  Traceback t3(ga);
+
+  vector<Traceback> tbv;
+  tbv.push_back(t);
+  tbv.push_back(t2);
+  tbv.push_back(t3);
+  Pileup p(tbv);
+
+  vector<vector<vector<int> > > pileup = p.getPileup();
+  p.printPileup();
+
+  
   vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;
   for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {
     Node * node = * iter;
     string cigar = ga->getNodeCigar(node);
     int offset = ga->getNodeOffset(node);
+    //ga->printMatrix(node, cout);
     cout << "  Node=" << node->getId() << " CIGAR=" << cigar << " offset=" << offset << endl;
   }
 }
