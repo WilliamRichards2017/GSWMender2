@@ -120,12 +120,17 @@ GraphAlignment::GraphAlignment(
     vector< vector< vector< vector<bool> > > > T; // traceback matrices for Graph nodes; inner dimenstion is 3 possible states; middle two are rows and columns; outer is node serial
    
      // initialize score matrices with all 0s
+     // initialize score matrices with all 0s
     for (int i1=0; i1<=l1; i1++) {
       vector< vector<int> > zeroVectorVector;
       for (int i2=0; i2<=l2; i2++) {
-	zeroVector.push_back(0);
+	vector<int> zeroVector;
+	for (int i3=0; i3<=2; i3++) {
+	  zeroVector.push_back(0);
+	}
+	zeroVectorVector.push_back(zeroVector);
       }
-      zeroVectorVector.push_back(zeroVector);
+      S.push_back(zeroVectorVector);
     }
     
     // initialize gap score matrices with negative numbers
@@ -520,6 +525,10 @@ int GraphAlignment::getNodeOffset(Node * node) {
 string GraphAlignment::getGlobalAlignment() {
   
   return globalAlignment;
+}
+
+string GraphAlignment::getQuerySequence() {
+  return s2;
 }
 
 //------------------------------------------------------------------------------

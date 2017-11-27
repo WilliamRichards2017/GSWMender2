@@ -35,8 +35,10 @@
 #include "Class-GraphAlignment.h"
 #include "Class-Traceback.h"
 #include "Class-Pileup.h"
+#include "Class-Graph.h"
 #include "ArrayUtil.h"
 
+#include "Variant.h"
 // uses
 using namespace std; 
 using namespace TCLAP; 
@@ -463,14 +465,28 @@ int main (int argc, char *argv[]) {
 			  contributors4
 			  );
   //  subjectNodes.push_back(node5);
-  GraphAlignment * ga = new GraphAlignment(subjectNodes, query, M, X, GI, GE, debug);
+
+
+  subject = "CCCGCCC";
+  string q1 = "CCCGCCC";
+  string q2 = "ACCCGCCC";
+
+
+  Variant v = {subject, make_pair("T","G"), 3};
+
+
+  Graph g(v);
+
+
+  GraphAlignment * ga = new GraphAlignment(g.getSubjectNodes(), q1, M, X, GI, GE, debug);
+  GraphAlignment * ga2 = new GraphAlignment(g.getSubjectNodes(), q2, M, X, GI, GE, debug);
 
   cout << "Optimal score of GSW: " << ga->getScore() << endl;
   cout << "Global Cigar:" << ga->getGlobalCigar() << endl;
   cout << "Global Alignment:" << endl << ga->getGlobalAlignment() << endl;
 
   Traceback t(ga);
-  Traceback t2(ga);
+  Traceback t2(ga2);
   Traceback t3(ga);
 
   vector<Traceback> tbv;
@@ -479,8 +495,8 @@ int main (int argc, char *argv[]) {
   tbv.push_back(t3);
   Pileup p(tbv);
 
-  vector<vector<vector<int> > > pileup = p.getPileup();
-  p.printPileup();
+  //vector<vector<vector<int> > > pileup = p.getPileup();
+  //p.printPileup();
 
   
   vector<Node *> matchedNodes = ga->getMatchedNodes();

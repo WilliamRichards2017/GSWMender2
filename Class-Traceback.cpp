@@ -48,6 +48,10 @@ Traceback::Traceback(GraphAlignment* ga){
   }
 }
 
+string Traceback::getQuery(){
+  return query_;
+}
+
 vector<pair<char, int> > Traceback::parseCigar(string cigar){
   cout << "cigar is: " << cigar << endl;
   vector<pair<char, int> > parsedCigs;
@@ -74,6 +78,10 @@ vector<pair<char, int> > Traceback::parseCigar(string cigar){
 
 vector<vector<vector<int> > > Traceback::getTracebackVector(){
   return tracebacks_;
+}
+
+void Traceback::trimQuery(int startPos, int endPos){
+  
 }
 
 vector<vector<int> > Traceback::buildTB(Node * node){

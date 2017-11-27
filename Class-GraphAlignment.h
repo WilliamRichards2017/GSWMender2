@@ -1,3 +1,6 @@
+#ifndef __GRAPHALIGNMENT_H_INCLUDED__
+#define __GRAPHALIGNMENT_H_INCLUDED__
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 // Class-GraphAlignment
@@ -98,6 +101,8 @@ public:
   // getQueryLength
   int getQueryLength();
 
+  string getQuerySequence();
+
   // printMatrix
   void printMatrix(Node *, ostream&);
 
@@ -151,3 +156,5 @@ public:
   map<Node *, string, less<Node *> > nodeCigarMap;
   map<Node *, int, less<Node *> > nodeOffsetMap;
 };
+
+#endif

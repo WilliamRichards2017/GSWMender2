@@ -38,8 +38,8 @@ all: sw gsw
 sw: sw.o Class-Alignment.o Class-Node.o
 	$(CC) $(CFLAGS) sw.o Class-Alignment.o -lboost_regex -lpthread -o sw
 
-gsw: gsw.o Class-GraphAlignment.o Class-Node.o Class-Traceback.o Class-Pileup.o ArrayUtil.o
-	$(CC) $(CFLAGS) gsw.o Class-Node.o Class-GraphAlignment.o Class-Traceback.o Class-Pileup.o ArrayUtil.o -lboost_regex -lpthread -o gsw
+gsw: gsw.o Class-GraphAlignment.o Class-Node.o Class-Traceback.o Class-Pileup.o Class-Graph.o ArrayUtil.o 
+	$(CC) $(CFLAGS) gsw.o Class-Node.o Class-GraphAlignment.o Class-Traceback.o Class-Pileup.o Class-Graph.p ArrayUtil.o -lboost_regex -lpthread -o gsw
 
 ################################################################################
 # Compilation
@@ -54,6 +54,9 @@ gsw.o: gsw.cpp
 
 ArrayUtil.o: ArrayUtil.cpp
 	$(CC) $(CFLAGS) -c ArrayUtil.cpp -o ArrayUtil.o
+
+Class-Graph.o: Class-Graph.cpp
+	$(CC) $(CFLAGS) -c Class-Graph.cpp -o Class-Graph.p
 
 Class-Traceback.o: Class-Traceback.cpp
 	$(CC) $(CFLAGS) -c Class-Traceback.cpp -o Class-Traceback.o
@@ -75,7 +78,7 @@ Class-Node.o: Class-Node.cpp
 ################################################################################
 archive:	sw.cpp Class-Alignment.cpp Class-Alignment.h Class-Pileup.h \
 	gsw.cpp Class-GraphAlignment.cpp Class-GraphAlignment.h Class-Traceback.h \
-	 Class-Node.cpp  Class-Node.h Makefile 
+	 Class-Node.cpp  Class-Node.h Class-Graph.cpp Class-Graph.h Makefile 
 	tar cvf GSW.tar sw.cpp Class-Alignment.cpp Class-Alignment.h \
 	gsw.cpp Class-GraphAlignment.cpp Class-GraphAlignment.h \
 	Class-Node.cpp  Class-Node.h ArrayUtil.o Makefile; \

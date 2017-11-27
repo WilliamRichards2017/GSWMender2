@@ -9,15 +9,16 @@ class Traceback {
  public:
   Traceback(GraphAlignment*);
   GraphAlignment *ga_;
+  string getQuery();
   vector<vector<vector<int> > > getTracebackVector();
   vector<pair<char, int> > parseCigar(string);
 
  private:
-
   vector<string> cigars_;
   string query_;
   int queryPos_;
   vector<vector<vector<int> > > tracebacks_;
+  void trimQuery(int, int);
   vector<vector<int> > buildTB(Node *);
 
 
