@@ -1,5 +1,7 @@
 #include "Class-Traceback.h"
 #include "termcolor.hpp"
+#include "Coords.h"
+
 #include <assert.h>
 
 #define toDigit(c) (c-'0')
@@ -38,11 +40,11 @@ void printArray2D(vector<vector<int> > vec){
   cout << endl;
 }
 
-Traceback::Traceback(GraphAlignment* ga){
-  ga_ = ga;
-  query_ = ga->getQuerySequence();
-  queryPos_ = 0;
+Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0){
+  query_ = ga_->getQuerySequence();
+  trimQuery();
   vector<Node *> matchedNodes = ga->getMatchedNodes();
+  cout << "Got matched nodes before seg fault";
   for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {
     tracebacks_.push_back(buildTB(* iter));
   }
@@ -53,7 +55,7 @@ string Traceback::getQuery(){
 }
 
 vector<pair<char, int> > Traceback::parseCigar(string cigar){
-  cout << "cigar is: " << cigar << endl;
+  //cout << "cigar is: " << cigar << endl;
   vector<pair<char, int> > parsedCigs;
   int pos = 0;
   while(pos < cigar.length()){
@@ -80,16 +82,19 @@ vector<vector<vector<int> > > Traceback::getTracebackVector(){
   return tracebacks_;
 }
 
-void Traceback::trimQuery(int startPos, int endPos){
-  
+void Traceback::trimQuery(){
+  assert(c_->SS >= c_->QS);
+  assert(c_->QE >= c_->SE);
+  cout << "Query is " << query_ << std::endl;
+  query_ = query_.substr(c_->SS-c_->QS, c_->SE-c_->SS+1);
+  cout << "Trimmed query is " << query_<< std::endl;
 }
 
 vector<vector<int> > Traceback::buildTB(Node * node){
   vector<vector<int > > tb;
-  //mstring cigar = ga_->getNodeCigar(node);
   vector<pair<char, int> > parsedCigar = parseCigar(ga_->getNodeCigar(node));
   int subjectPos = ga_->getNodeOffset(node);
-  tb = buildArray2D(ga_->getQuerySequence().length(), node->getSequence().length());
+  tb = buildArray2D(query_.length(), node->getSequence().length());
   for(auto it = std::begin(parsedCigar); it != std::end(parsedCigar); ++it){
     switch(it->first) 
       {

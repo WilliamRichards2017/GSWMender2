@@ -501,9 +501,10 @@ string GraphAlignment::getGlobalCigar() {
 // getMatchedNodes()
 //------------------------------------------------------------------------------
 vector<Node *> GraphAlignment::getMatchedNodes() {
+  //  cout << "inside getMatched Nodes\n";
   return matchedNodes;
 }
- 
+
 
 //------------------------------------------------------------------------------
 // getNodeCigar()

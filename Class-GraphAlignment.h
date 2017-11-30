@@ -115,6 +115,8 @@ public:
   // getMatchedNodes()
   vector<Node *> getMatchedNodes();
 
+  vector<Node *> getSubectNodes();
+
   // getNodeCigar
   string getNodeCigar(Node *);
 

@@ -3,22 +3,25 @@
 
 
 #include "Class-GraphAlignment.h"
+#include "Coords.h"
 
 class Traceback {
 
  public:
-  Traceback(GraphAlignment*);
+  Traceback(GraphAlignment*, coords*);
   GraphAlignment *ga_;
   string getQuery();
   vector<vector<vector<int> > > getTracebackVector();
   vector<pair<char, int> > parseCigar(string);
 
  private:
+  coords *c_;
   vector<string> cigars_;
   string query_;
   int queryPos_;
+  
   vector<vector<vector<int> > > tracebacks_;
-  void trimQuery(int, int);
+  void trimQuery();
   vector<vector<int> > buildTB(Node *);
 
 

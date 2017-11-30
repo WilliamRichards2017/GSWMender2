@@ -38,7 +38,10 @@
 #include "Class-Graph.h"
 #include "ArrayUtil.h"
 
+//header only structs
 #include "Variant.h"
+#include "Coords.h"
+
 // uses
 using namespace std; 
 using namespace TCLAP; 
@@ -466,39 +469,38 @@ int main (int argc, char *argv[]) {
 			  );
   //  subjectNodes.push_back(node5);
 
-
-  subject = "CCCGCCC";
-  string q1 = "CCCGCCC";
-  string q2 = "ACCCGCCC";
-
-
-  Variant v = {subject, make_pair("T","G"), 3};
-
-
+  //Make a single graph from our reference sequence and SV 
+  subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
+  Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
   Graph g(v);
 
-
+  string q1 = "CATCCACTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCC";
+  coords * c1 = new coords(184258374,184258455,184258325,184258475);
   GraphAlignment * ga = new GraphAlignment(g.getSubjectNodes(), q1, M, X, GI, GE, debug);
+  Traceback t(ga,c1);
+
+
+  string q2 = "CCACTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGGTGCAAGAGGTCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTC";
+  coords * c2 = new coords(184258374,184258455,184258328,184258478);
   GraphAlignment * ga2 = new GraphAlignment(g.getSubjectNodes(), q2, M, X, GI, GE, debug);
+  Traceback t2(ga2,c2);
 
-  cout << "Optimal score of GSW: " << ga->getScore() << endl;
-  cout << "Global Cigar:" << ga->getGlobalCigar() << endl;
-  cout << "Global Alignment:" << endl << ga->getGlobalAlignment() << endl;
-
-  Traceback t(ga);
-  Traceback t2(ga2);
-  Traceback t3(ga);
+  string q3 = "ACTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACCATCTAAGGAAAGGTGTCCCCCCATTCCCA";
+  coords * c3 = new coords(184258374,184258455,184258330,184258510);
+  GraphAlignment * ga3 = new GraphAlignment(g.getSubjectNodes(), q3, M, X, GI, GE, debug);
+  Traceback t3(ga3,c3);
 
   vector<Traceback> tbv;
   tbv.push_back(t);
   tbv.push_back(t2);
   tbv.push_back(t3);
+  
   Pileup p(tbv);
 
-  //vector<vector<vector<int> > > pileup = p.getPileup();
-  //p.printPileup();
+  vector<vector<vector<int> > > pileup = p.getPileup();
+  p.printPileup();
 
-  
+
   vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;
   for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {

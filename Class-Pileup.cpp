@@ -1,13 +1,18 @@
 #include "Class-Pileup.h"
+#include "Class-Traceback.h"
 #include "ArrayUtil.h"
 
 Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
+  cout << "Inside pileup constuctor\n";
   sumTracebacks();
 }
 
 void Pileup::printPileup(){
+  int c = 1;
   for(auto it = std::begin(pileup_); it != std::end(pileup_); ++ it){
+    cout << "Printing out Node: " << c << std::endl;
     ArrayUtil::printArray2D(*it);
+    c++;
   }
 }
 
@@ -15,7 +20,6 @@ void Pileup::printPileup(){
 void Pileup::sumTracebacks(){
   pileup_ = tbv_.back().getTracebackVector();
   tbv_.pop_back();
-  cout << "iterating though " << tbv_.size() << " tracebacks" << endl;
   while(tbv_.size() > 0){
     vector<vector<vector<int> > > tb = tbv_.back().getTracebackVector();
     tbv_.pop_back();
