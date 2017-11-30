@@ -115,7 +115,7 @@ public:
   // getMatchedNodes()
   vector<Node *> getMatchedNodes();
 
-  vector<Node *> getSubectNodes();
+  //vector<Node *> getAllNodes();
 
   // getNodeCigar
   string getNodeCigar(Node *);
@@ -155,6 +155,7 @@ public:
   string globalCigar;
   string globalAlignment;
   vector<Node *> matchedNodes;
+  //  vector<Node *> allNodes;
   map<Node *, string, less<Node *> > nodeCigarMap;
   map<Node *, int, less<Node *> > nodeOffsetMap;
 };

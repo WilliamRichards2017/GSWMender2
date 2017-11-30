@@ -6,12 +6,12 @@
 class Pileup {
  public:
   Pileup(vector<Traceback>);
-  vector<vector<vector<int> > > getPileup();
+  map<string, vector<vector<int> > > getPileup();
   void printPileup();
 
  private:
   void sumTracebacks();
-  vector<vector<vector<int> > > pileup_;
+  map<string, vector<vector<int> > > pileup_;
   vector<Traceback> tbv_;
 
 };

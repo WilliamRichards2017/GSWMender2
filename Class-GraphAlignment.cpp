@@ -84,6 +84,7 @@ GraphAlignment::GraphAlignment(
   //----------------------------------------------------------------------------
   s2 = query;
   l2 = s2.length();
+  // allNodes = subjectNodes;
 
   //----------------------------------------------------------------------------
   // initialize constants
@@ -464,6 +465,7 @@ GraphAlignment::GraphAlignment(
   
   // register corresponding CIGAR
   nodeCigarMap[node] = nodeCigar;
+  
 
   // register corresponding offset
   nodeOffsetMap[node] = i1;

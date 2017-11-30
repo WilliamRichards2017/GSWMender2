@@ -43,10 +43,11 @@ void printArray2D(vector<vector<int> > vec){
 Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0){
   query_ = ga_->getQuerySequence();
   trimQuery();
-  vector<Node *> matchedNodes = ga->getMatchedNodes();
+  vector<Node*> matchedNodes = ga->getMatchedNodes();
   cout << "Got matched nodes before seg fault";
-  for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {
-    tracebacks_.push_back(buildTB(* iter));
+  for(auto it = std::begin(matchedNodes); it != std::end(matchedNodes); ++it) {
+    //tracebacks_.push_back(buildTB(* iter));
+    tracebacks_[(*it)->getId()] = buildTB(* it);
   }
 }
 
@@ -78,7 +79,7 @@ vector<pair<char, int> > Traceback::parseCigar(string cigar){
   return parsedCigs;
 }
 
-vector<vector<vector<int> > > Traceback::getTracebackVector(){
+map<string, vector<vector<int> > > Traceback::getTracebackMap(){
   return tracebacks_;
 }
 

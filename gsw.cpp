@@ -417,57 +417,6 @@ int main (int argc, char *argv[]) {
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
   
-  vector<Node *> subjectNodes;
-
-  // make a node
-  vector<Node *> contributors1;
-  Node * node1 = new Node(
-			  "node1",
-			  "GAGGG",
-			  contributors1
-			  );
-  subjectNodes.push_back(node1);
- 
-  // make a node
-  vector<Node *> contributors2;
-  contributors2.push_back(node1);
-  Node * node2 = new Node(
-			  "node2",
-			  "AAA",
-			  contributors2
-			  );
-  subjectNodes.push_back(node2);
-
-  // make a node
-  vector<Node *> contributors3;
-  contributors3.push_back(node1);
-  Node * node3 = new Node(
-			  "node3",
-			  "",
-			  contributors3
-			  );
-  subjectNodes.push_back(node3);
-
-  // make a node
-  vector<Node *> contributors4;
-  contributors4.push_back(node2);
-  contributors4.push_back(node3);
-  Node * node4 = new Node(
-			  "node4",
-			  "TTTT",
-			  contributors4
-			  );
-  subjectNodes.push_back(node4);
-
-  // make a node
-  vector<Node *> contributors5;
-  contributors4.push_back(node4);
-  Node * node5 = new Node(
-			  "node5",
-			  "A",
-			  contributors4
-			  );
-  //  subjectNodes.push_back(node5);
 
   //Make a single graph from our reference sequence and SV 
   subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
@@ -497,7 +446,6 @@ int main (int argc, char *argv[]) {
   
   Pileup p(tbv);
 
-  vector<vector<vector<int> > > pileup = p.getPileup();
   p.printPileup();
 
 
@@ -511,4 +459,3 @@ int main (int argc, char *argv[]) {
     cout << "  Node=" << node->getId() << " CIGAR=" << cigar << " offset=" << offset << endl;
   }
 }
-
