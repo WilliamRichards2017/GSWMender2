@@ -3,6 +3,7 @@
 #include "ArrayUtil.h"
 
 Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
+  cout << "inside pileup constructor\n";
   sumTracebacks();
 }
 
@@ -15,14 +16,15 @@ void Pileup::printPileup(){
 
 
 void Pileup::sumTracebacks(){
+  cout << "inside sum tracebacks\n";
   pileup_ = tbv_.back().getTracebackMap();
   tbv_.pop_back();
   while(tbv_.size() > 0){
-    map<string, vector<vector<int> > > tb = tbv_.back().getTracebackMap();
+    map<Node *, vector<vector<int> > > tb = tbv_.back().getTracebackMap();
     tbv_.pop_back();
     unsigned c = 0;
     for(auto it = std::begin(tb); it != std::end(tb); ++it){
-      string id = it->first;
+      Node * id = it->first;
       vector<vector<int> > matrix = it->second;
       
       if(pileup_.find(id) == pileup_.end()){
@@ -39,7 +41,7 @@ void Pileup::sumTracebacks(){
   }
 }
 
-map<string , vector<vector<int> > > Pileup::getPileup(){
+map<Node * , vector<vector<int> > > Pileup::getPileup(){
   return pileup_;
 }
 

@@ -45,10 +45,12 @@ Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0
   query_ = ga_->getQuerySequence();
   trimQuery();
   vector<Node*> matchedNodes = ga->getMatchedNodes();
-  cout << "Got matched nodes before seg fault";
   for(auto it = std::begin(matchedNodes); it != std::end(matchedNodes); ++it) {
     //tracebacks_.push_back(buildTB(* iter));
-    tracebacks_[(*it)->getId()] = buildTB(* it);
+    Node * node = * it;
+    //tracebacks_[(*it)->getId()] = buildTB(* it);
+    tracebacks_[node] = buildTB(node);
+    cout << "testing if we can access node sequenc: " << node->getSequence() << std::endl;
   }
 }
 
@@ -80,16 +82,17 @@ vector<pair<char, int> > Traceback::parseCigar(string cigar){
   return parsedCigs;
 }
 
-map<string, vector<vector<int> > > Traceback::getTracebackMap(){
+map<Node *, vector<vector<int> > > Traceback::getTracebackMap(){
+  cout << "inside Traceback::getTracebackMap()\n";
   return tracebacks_;
 }
 
 void Traceback::trimQuery(){
   assert(c_->SS >= c_->QS);
   assert(c_->QE >= c_->SE);
-  cout << "Query is " << query_ << std::endl;
+  //cout << "Query is " << query_ << std::endl;
   query_ = query_.substr(c_->SS-c_->QS, c_->SE-c_->SS+1);
-  cout << "Trimmed query is " << query_<< std::endl;
+  //cout << "Trimmed query is " << query_<< std::endl;
 }
 
 vector<vector<int> > Traceback::buildTB(Node * node){
@@ -113,7 +116,7 @@ vector<vector<int> > Traceback::buildTB(Node * node){
     queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
   }
   else {
-    queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
+    queryPos_ = max(node->getContributorNodes()[0]->getQueryEnd(), node->getContributorNodes()[1]->getQueryEnd());
   }
 
   node->setQueryStart(queryPos_);
@@ -143,10 +146,9 @@ vector<vector<int> > Traceback::buildTB(Node * node){
 	}
       }
   }
-  cout << "made it past switch statements\n";
   node->setQueryEnd(queryPos_);
   
-  //cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
-  //printArray2D(tb); 
+  cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
+  printArray2D(tb); 
   return tb;
 }

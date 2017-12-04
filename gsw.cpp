@@ -465,7 +465,8 @@ int main (int argc, char *argv[]) {
   tbv.push_back(t5);
   tbv.push_back(t6);
 
-  
+
+  cout << "inside gsw before Pileup construction\n";
   Pileup p(tbv);
 
   p.printPileup();
