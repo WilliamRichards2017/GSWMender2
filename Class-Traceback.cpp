@@ -98,8 +98,6 @@ vector<vector<int> > Traceback::buildTB(Node * node){
   int subjectPos = ga_->getNodeOffset(node);
   tb = buildArray2D(query_.length(), node->getSequence().length());
 
-  cout << "inside built TB\n";
-
   /*if(node->getId()=="node3"){
     queryPos_ = queryPos_+30;
     }*/
@@ -115,12 +113,10 @@ vector<vector<int> > Traceback::buildTB(Node * node){
     queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
   }
   else {
-    queryPos_ = ga_->getMatchedNodes()[1]->getQueryEnd();
+    queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
   }
 
-  cout << "reset query pos\n";
   node->setQueryStart(queryPos_);
-  cout << "set Query start\n";
 
 
   for(auto it = std::begin(parsedCigar); it != std::end(parsedCigar); ++it){
