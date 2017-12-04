@@ -466,13 +466,13 @@ int main (int argc, char *argv[]) {
   tbv.push_back(t6);
 
 
-  cout << "inside gsw before Pileup construction\n";
+  //  cout << "inside gsw before Pileup construction\n";
   Pileup p(tbv);
 
   p.printPileup();
 
 
-  vector<Node *> matchedNodes = ga->getMatchedNodes();
+  /*  vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;
   for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {
     Node * node = * iter;
@@ -480,5 +480,5 @@ int main (int argc, char *argv[]) {
     int offset = ga->getNodeOffset(node);
     //ga->printMatrix(node, cout);
     cout << "  Node=" << node->getId() << " CIGAR=" << cigar << " offset=" << offset << endl;
-  }
+    } */
 }

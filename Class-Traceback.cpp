@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <assert.h>
+#include "ArrayUtil.h"
 
 #define toDigit(c) (c-'0')
 
@@ -17,32 +18,8 @@ bool isCigarChar( char c ){
 }
 
 
-vector<vector<int> > buildArray2D(unsigned height, unsigned width){
-  vector<vector<int> > array(height, vector<int>(width, 0));
-  return array;
-}
-
-void printArray2D(vector<vector<int> > vec){
-  for (int i = 0; i < vec.size(); i++){
-    for (int j = 0; j < vec[i].size(); j++){
-      if(vec[i][j] >=10 ){
-
-	cout << termcolor::red << termcolor::bold << vec[i][j] << termcolor::reset << " ";
-      }
-      else if(vec[i][j] != 0){
-	cout << termcolor::red << termcolor::bold << vec[i][j] << termcolor::reset << "  ";
-      }
-      else{
-	cout << vec[i][j] << "  ";
-      }
-    }
-    cout << endl;
-  }
-  cout << endl;
-}
-
-Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0){
-  query_ = ga_->getQuerySequence();
+Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0), query_(ga->getQuerySequence()){
+  //query_ = ga_->getQuerySequence();
   trimQuery();
   vector<Node*> matchedNodes = ga->getMatchedNodes();
   for(auto it = std::begin(matchedNodes); it != std::end(matchedNodes); ++it) {
@@ -50,11 +27,11 @@ Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0
     Node * node = * it;
     //tracebacks_[(*it)->getId()] = buildTB(* it);
     tracebacks_[node] = buildTB(node);
-    cout << "testing if we can access node sequenc: " << node->getSequence() << std::endl;
   }
 }
 
 string Traceback::getQuery(){
+  cout << "Inside getQuery, query is  " << query_ << std::endl;
   return query_;
 }
 
@@ -90,16 +67,16 @@ map<Node *, vector<vector<int> > > Traceback::getTracebackMap(){
 void Traceback::trimQuery(){
   assert(c_->SS >= c_->QS);
   assert(c_->QE >= c_->SE);
-  //cout << "Query is " << query_ << std::endl;
+  cout << "Query is " << query_ << std::endl;
   query_ = query_.substr(c_->SS-c_->QS, c_->SE-c_->SS+1);
-  //cout << "Trimmed query is " << query_<< std::endl;
+  cout << "Trimmed query is " << query_<< std::endl;
 }
 
 vector<vector<int> > Traceback::buildTB(Node * node){
   vector<vector<int > > tb;
   vector<pair<char, int> > parsedCigar = parseCigar(ga_->getNodeCigar(node));
   int subjectPos = ga_->getNodeOffset(node);
-  tb = buildArray2D(query_.length(), node->getSequence().length());
+  tb = ArrayUtil::buildArray2D(query_.length(), node->getSequence().length());
 
   /*if(node->getId()=="node3"){
     queryPos_ = queryPos_+30;
@@ -148,7 +125,7 @@ vector<vector<int> > Traceback::buildTB(Node * node){
   }
   node->setQueryEnd(queryPos_);
   
-  cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
-  printArray2D(tb); 
+  //cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
+  //ArrayUtil::printArray2D(tb); 
   return tb;
 }
