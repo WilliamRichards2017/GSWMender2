@@ -3,23 +3,18 @@
 #include "ArrayUtil.h"
 
 Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
-  cout << "Inside pileup constuctor\n";
   sumTracebacks();
 }
 
 void Pileup::printPileup(){
-  int c = 1;
-  cout << "inside print pileup\n";
   for(auto it = std::begin(pileup_); it != std::end(pileup_); ++ it){
-    cout << "Printing out Node: " << c << std::endl;
+    cout << "Printing out" << it->first << std::endl;
     ArrayUtil::printArray2D(it->second);
-    c++;
   }
 }
 
 
 void Pileup::sumTracebacks(){
-  cout << "inside sum tracebacks\n";
   pileup_ = tbv_.back().getTracebackMap();
   tbv_.pop_back();
   while(tbv_.size() > 0){
@@ -44,8 +39,7 @@ void Pileup::sumTracebacks(){
   }
 }
 
-
-map<string, vector<vector<int> > > Pileup::getPileup(){
+map<string , vector<vector<int> > > Pileup::getPileup(){
   return pileup_;
 }
 

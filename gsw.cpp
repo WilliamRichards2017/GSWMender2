@@ -420,7 +420,10 @@ int main (int argc, char *argv[]) {
 
   //Make a single graph from our reference sequence and SV 
   subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
-  Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
+  //Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
+
+  Variant v = {subject, make_pair("AGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258404-184258374};
+
   Graph g(v);
 
   string q1 = "CATCCACTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCC";
@@ -439,10 +442,29 @@ int main (int argc, char *argv[]) {
   GraphAlignment * ga3 = new GraphAlignment(g.getSubjectNodes(), q3, M, X, GI, GE, debug);
   Traceback t3(ga3,c3);
 
+  string q4 = "ACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACCATCTAAGGAAAGGTGTCCCCCCATTCCCAATGGTGCGTGGTACACAGAT";
+  coords * c4 = new coords(184258374,184258455,184258352,184258530);
+  GraphAlignment * ga4 = new GraphAlignment(g.getSubjectNodes(), q4, M, X, GI, GE, debug);
+  Traceback t4(ga4,c4);
+
+  string q5 = "CTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGGCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACC";
+  coords * c5 = new coords(184258374,184258455,184258331,184258481);
+  GraphAlignment * ga5 = new GraphAlignment(g.getSubjectNodes(), q5, M, X, GI, GE, debug);
+  Traceback t5(ga5,c5);
+
+  string q6 = "CTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGGCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACC";
+  coords * c6 = new coords(184258374,184258455,184258352,184258530);
+  GraphAlignment * ga6 = new GraphAlignment(g.getSubjectNodes(), q6, M, X, GI, GE, debug);
+  Traceback t6(ga6,c6);
+
   vector<Traceback> tbv;
   tbv.push_back(t);
   tbv.push_back(t2);
   tbv.push_back(t3);
+  tbv.push_back(t4);
+  tbv.push_back(t5);
+  tbv.push_back(t6);
+
   
   Pileup p(tbv);
 

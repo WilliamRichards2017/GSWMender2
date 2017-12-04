@@ -2,6 +2,7 @@
 #include "termcolor.hpp"
 #include "Coords.h"
 
+#include <string.h>
 #include <assert.h>
 
 #define toDigit(c) (c-'0')
@@ -96,6 +97,32 @@ vector<vector<int> > Traceback::buildTB(Node * node){
   vector<pair<char, int> > parsedCigar = parseCigar(ga_->getNodeCigar(node));
   int subjectPos = ga_->getNodeOffset(node);
   tb = buildArray2D(query_.length(), node->getSequence().length());
+
+  cout << "inside built TB\n";
+
+  /*if(node->getId()=="node3"){
+    queryPos_ = queryPos_+30;
+    }*/
+  
+  if( strcmp(node->getId().c_str(), "node1")==0){
+    queryPos_=0;
+  }
+  else if( strcmp(node->getId().c_str(), "node2")==0){
+    queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
+  }
+  else if( strcmp(node->getId().c_str(), "node3")==0){
+
+    queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
+  }
+  else {
+    queryPos_ = ga_->getMatchedNodes()[1]->getQueryEnd();
+  }
+
+  cout << "reset query pos\n";
+  node->setQueryStart(queryPos_);
+  cout << "set Query start\n";
+
+
   for(auto it = std::begin(parsedCigar); it != std::end(parsedCigar); ++it){
     switch(it->first) 
       {
@@ -120,8 +147,10 @@ vector<vector<int> > Traceback::buildTB(Node * node){
 	}
       }
   }
+  cout << "made it past switch statements\n";
+  node->setQueryEnd(queryPos_);
   
-  cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
-  printArray2D(tb); 
+  //cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
+  //printArray2D(tb); 
   return tb;
 }

@@ -80,6 +80,11 @@ public:
   // printNode
   void printNode(ostream&);
 
+  int getQueryStart();
+  int getQueryEnd();			       
+  void setQueryStart(int);
+  void setQueryEnd(int);
+
   //----------------------------------------------------------------------------
   // public variables
   //----------------------------------------------------------------------------
@@ -92,6 +97,8 @@ private:
   string id;
   string sequence;
   vector<Node *> contributors;
+  int queryStart_;
+  int queryEnd_;
 };
 
 #endif

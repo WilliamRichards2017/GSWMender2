@@ -94,6 +94,7 @@ string Node::getId() {
   return id;
 }
 
+
 //------------------------------------------------------------------------------
 // getSubjectLength()
 //------------------------------------------------------------------------------
@@ -107,6 +108,23 @@ string Node::getSequence() {
 vector<Node *> Node::getContributorNodes() {
   return contributors;
 }
+
+int Node::getQueryStart(){
+  return queryStart_;
+}
+
+int Node::getQueryEnd(){
+  return queryEnd_;
+}
+
+void Node::setQueryStart(int q){
+  queryStart_ = q;
+}
+
+void Node::setQueryEnd(int q){
+  queryEnd_ = q;
+}
+
 
 //------------------------------------------------------------------------------
 // printNode()
