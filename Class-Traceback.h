@@ -1,7 +1,6 @@
 #ifndef __TRACEBACK_H_INCLUDED__
 #define __TRACEBACK_H_INCLUDED__
 
-
 #include "Class-GraphAlignment.h"
 #include "Class-Node.h"
 #include "Coords.h"

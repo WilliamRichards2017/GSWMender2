@@ -10,15 +10,19 @@ Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
 void Pileup::printPileup(){
   cout << "query is " << query_ << std::endl;
   for(auto it = std::begin(pileup_); it != std::end(pileup_); ++ it){
-    cout << "Printing out" << it->first->getId() << std::endl;
+    cout << "Printing out " << it->first->getId() << "  traceback dims: " << it->second.size() << ", " << it->second[0].size() << std::endl;
     //ArrayUtil::printArray2D(it->second);
-    ArrayUtil::printNode(it->first, it->second, query_);
+    ArrayUtil::printNode(it->first, it->second, queries_);
   }
 }
 
 
 void Pileup::sumTracebacks(){
-  query_ = tbv_.front().getQuery();
+  queries_.push_back(tbv_.front().getQuery());
+  queries_.push_back(tbv_.back().getQuery());
+
+
+  
   cout << "inside sum tracebacks\n";
   pileup_ = tbv_.back().getTracebackMap();
   tbv_.pop_back();

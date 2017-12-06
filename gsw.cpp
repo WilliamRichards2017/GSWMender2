@@ -420,9 +420,9 @@ int main (int argc, char *argv[]) {
 
   //Make a single graph from our reference sequence and SV 
   subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
-  //Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
+  Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
 
-  Variant v = {subject, make_pair("AGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258404-184258374};
+  //Variant v = {subject, make_pair("AGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258404-184258374};
 
   Graph g(v);
 
@@ -452,7 +452,7 @@ int main (int argc, char *argv[]) {
   GraphAlignment * ga5 = new GraphAlignment(g.getSubjectNodes(), q5, M, X, GI, GE, debug);
   Traceback t5(ga5,c5);
 
-  string q6 = "CTTTAGCAAAGTGGAGTGCCTACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGGCTTGGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACC";
+  string q6 = "ACTTGGAGCAGCAGAGCACACTGAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGATAAGGCCACGGGGCCTGAGGCACCCCTAGACCCTGAGCCTTCACCATCTAAGGAAAGGTGTCCCCCCATTCCCAATGGTGCGTGGTACACAGAT";
   coords * c6 = new coords(184258374,184258455,184258352,184258530);
   GraphAlignment * ga6 = new GraphAlignment(g.getSubjectNodes(), q6, M, X, GI, GE, debug);
   Traceback t6(ga6,c6);
@@ -471,6 +471,7 @@ int main (int argc, char *argv[]) {
 
   p.printPileup();
 
+  cout << "- -";
 
   /*  vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;

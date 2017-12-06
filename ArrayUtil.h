@@ -9,7 +9,7 @@ using namespace std;
 class ArrayUtil{
  public:
   static vector<vector<int> > buildArray2D(unsigned, unsigned);
-  static void printNode(Node *, vector<vector<int> >, string);
+  static void printNode(Node *, vector<vector<int> >, vector<string>);
   static void printArray2D(vector<vector<int> >);
 };
 
