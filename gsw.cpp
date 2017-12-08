@@ -417,7 +417,7 @@ int main (int argc, char *argv[]) {
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
   
-
+  /*
   //Make a single graph from our reference sequence and SV 
   subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
   Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
@@ -470,10 +470,31 @@ int main (int argc, char *argv[]) {
   Pileup p(tbv);
 
   p.printPileup();
+  */
 
-  cout << "- -";
+  subject = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
+  Variant v = {subject, make_pair("CCCCCCCCCC","GGGGGGGGGG"), 10}; 
+  Graph g(v);
+ 
+  string q1 = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
+  coords * c1 = new coords(10,40,10,40);
+  GraphAlignment * ga = new GraphAlignment(g.getSubjectNodes(), q1, M, X, GI, GE, debug);
+  Traceback t1(ga,c1);    
 
-  /*  vector<Node *> matchedNodes = ga->getMatchedNodes();
+  string q2 = "AAAAAAAAAAGGGGGGGGGGTTTTTTTTTT";
+  coords * c2 = new coords(10,40,10,40);
+  GraphAlignment * ga2 = new GraphAlignment(g.getSubjectNodes(), q2, M, X, GI, GE, debug);
+  Traceback t2(ga2,c2);
+
+  vector<Traceback> tbv;
+  
+  tbv.push_back(t1);
+  tbv.push_back(t2);
+
+  Pileup p(tbv);
+  p.printPileup();
+
+  /*  Vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;
   for (vector<Node *>::const_iterator iter = matchedNodes.begin(); iter != matchedNodes.end(); iter++) {
     Node * node = * iter;

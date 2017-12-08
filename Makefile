@@ -28,7 +28,7 @@
 CC=g++
 
 # Compiler flags
-CFLAGS=
+CFLAGS= -g -Wall -Wextra -std=c++11
 
 ################################################################################
 # Program builds
