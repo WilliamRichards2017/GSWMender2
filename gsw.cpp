@@ -481,6 +481,8 @@ int main (int argc, char *argv[]) {
   GraphAlignment * ga = new GraphAlignment(g.getSubjectNodes(), q1, M, X, GI, GE, debug);
   Traceback t1(ga,c1);    
 
+  cout << "created first traceback, now inside gsw.pp";
+
   string q2 = "AAAAAAAAAAGGGGGGGGGGTTTTTTTTTT";
   coords * c2 = new coords(10,40,10,40);
   GraphAlignment * ga2 = new GraphAlignment(g.getSubjectNodes(), q2, M, X, GI, GE, debug);

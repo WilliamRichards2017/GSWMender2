@@ -19,10 +19,12 @@ class Traceback {
   coords *c_;
   vector<string> cigars_;
   string query_;
+  string formatedQuery_;
   int queryPos_;
   
   map<Node *, vector<vector<int> > > tracebacks_;
   void trimQuery();
+  void formatQuery();
   vector<vector<int> > buildTB(Node *);
 
 };

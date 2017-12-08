@@ -8,7 +8,7 @@ Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
 }
 
 void Pileup::printPileup(){
-  cout << "query is " << query_ << std::endl;
+  cout << "query is " << queries_[0] << std::endl;
   for(auto it = std::begin(pileup_); it != std::end(pileup_); ++ it){
     cout << "Printing out " << it->first->getId() << "  traceback dims: " << it->second.size() << ", " << it->second[0].size() << std::endl;
     //ArrayUtil::printArray2D(it->second);
@@ -31,6 +31,7 @@ void Pileup::sumTracebacks(){
     tbv_.pop_back();
     unsigned c = 0;
     for(auto it = std::begin(tb); it != std::end(tb); ++it){
+      cout << "summing TB inside loop\n";
       Node * id = it->first;
       vector<vector<int> > matrix = it->second;
       
