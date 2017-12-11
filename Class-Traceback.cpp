@@ -129,8 +129,6 @@ vector<vector<int> > Traceback::buildTB(Node * node) {
     queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
   }
 
-
-
   cout << "setting query pos to be " << queryPos_ << std::endl;
   node->setQueryStart(queryPos_);
 

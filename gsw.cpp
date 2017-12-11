@@ -417,9 +417,9 @@ int main (int argc, char *argv[]) {
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
   
-  /*
+  
   //Make a single graph from our reference sequence and SV 
-  subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
+  /*subject = "GAGTACAAGTCCCCTTGCAGCAGAGTTGCAAGAGGTCTTGGACCTGTGGTCCTAATGCAAGATAAGGCCACGGGGCCTGAG";
   Variant v = {subject, make_pair("TTGCAAGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258399-184258374};
 
   //Variant v = {subject, make_pair("AGAGGTCTTGGGACCTGTGGTCCTAA","T"), 184258404-184258374};
@@ -473,15 +473,14 @@ int main (int argc, char *argv[]) {
   */
 
   subject = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
-  Variant v = {subject, make_pair("CCCCCCCCCC","T"), 10}; 
+  Variant v = {subject, make_pair("ACCCCCCCCCC","A"), 9}; 
+  //Variant v = {subject, make_pair("CCCCCC","C"), 14};
   Graph g(v);
  
   string q1 = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
   coords * c1 = new coords(10,40,10,40);
   GraphAlignment * ga = new GraphAlignment(g.getSubjectNodes(), q1, M, X, GI, GE, debug);
   Traceback t1(ga,c1);    
-
-  cout << "created first traceback, now inside gsw.pp";
 
   string q2 = "AAAAAAAAAATTTTTTTTTTT";
   coords * c2 = new coords(10,40,10,40);
@@ -494,7 +493,7 @@ int main (int argc, char *argv[]) {
   tbv.push_back(t2);
 
   Pileup p(tbv);
-  p.printPileup();
+  p.printPileup(); 
 
   /*  Vector<Node *> matchedNodes = ga->getMatchedNodes();
   cout << "Graph node alignments:" << endl;
