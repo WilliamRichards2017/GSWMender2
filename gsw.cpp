@@ -473,7 +473,7 @@ int main (int argc, char *argv[]) {
   */
 
   subject = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
-  Variant v = {subject, make_pair("CCCCCCCCCC","GGGGGGGGGG"), 10}; 
+  Variant v = {subject, make_pair("CCCCCCCCCC","T"), 10}; 
   Graph g(v);
  
   string q1 = "AAAAAAAAAACCCCCCCCCCTTTTTTTTTT";
@@ -483,7 +483,7 @@ int main (int argc, char *argv[]) {
 
   cout << "created first traceback, now inside gsw.pp";
 
-  string q2 = "AAAAAAAAAAGGGGGGGGGGTTTTTTTTTT";
+  string q2 = "AAAAAAAAAATTTTTTTTTTT";
   coords * c2 = new coords(10,40,10,40);
   GraphAlignment * ga2 = new GraphAlignment(g.getSubjectNodes(), q2, M, X, GI, GE, debug);
   Traceback t2(ga2,c2);

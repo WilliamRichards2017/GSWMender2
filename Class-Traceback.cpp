@@ -19,8 +19,8 @@ bool isCigarChar( char c ){
 
 
 Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0), query_(ga->getQuerySequence()){
-  formatedQuery_ = ga_->getQuerySequence();
   trimQuery();
+  formatQuery();
   vector<Node*> matchedNodes = ga->getMatchedNodes();
   cout << "got " << matchedNodes.size() << " matched nodes\n";
   for(auto it = std::begin(matchedNodes); it != std::end(matchedNodes); ++it) {
@@ -38,7 +38,32 @@ string Traceback::getQuery(){
 }
 
 void Traceback::formatQuery(){
-  return;
+  vector<pair<char, int> > parsedCigar = parseCigar(ga_->getGlobalCigar());
+  string formatedQuery = "";
+  int pos = 0;
+  for(auto it = std::begin(parsedCigar); it != std::end(parsedCigar); ++it){
+    switch(it->first)
+      {
+      case 'M':
+	while(it->second > 0){
+	  formatedQuery += query_.at(pos);
+	  cout << "appending " << query_[pos] << " to formated query\n";
+	  pos++;
+	  it->second--;
+	}
+      case 'I':
+	
+      case 'D':
+        while(it->second > 0){
+          formatedQuery += "-";
+	  it->second--;
+
+        }
+      }
+  }
+  formatedQuery_ = formatedQuery;
+  cout << "formated query is: " << formatedQuery_  << std::endl;
+    
 }
 
 vector<pair<char, int> > Traceback::parseCigar(string cigar){
@@ -55,8 +80,6 @@ vector<pair<char, int> > Traceback::parseCigar(string cigar){
       number += char(cigar[pos]); 
       pos++;
     }
-
-
     char *c = &number[0u];
 
     p.second = atoi(c);
@@ -80,11 +103,11 @@ void Traceback::trimQuery(){
 
 
 
-vector<vector<int> > Traceback::buildTB(Node * node){
-  vector<vector<int > > tb  = ArrayUtil::buildArray2D(query_.length(), node->getSequence().length());
+vector<vector<int> > Traceback::buildTB(Node * node) {
+  vector<vector<int > > tb  = ArrayUtil::buildArray2D(c_->QE - c_->QS, node->getSequence().length());
   vector<pair<char, int> > parsedCigar = parseCigar(ga_->getNodeCigar(node));
   int subjectPos = ga_->getNodeOffset(node);
-  cout << "parsed cigar, got node offset, built empty array\n";
+// cout << "parsed cigar, got node offset, built empty array\n";
   cout << "node cigar is: " << ga_->getNodeCigar(node) << std::endl;
 
   /*if(node->getId()=="node3"){
@@ -106,16 +129,21 @@ vector<vector<int> > Traceback::buildTB(Node * node){
     queryPos_ = node->getContributorNodes()[0]->getQueryEnd();
   }
 
+
+
   cout << "setting query pos to be " << queryPos_ << std::endl;
   node->setQueryStart(queryPos_);
 
-
   for(auto it = std::begin(parsedCigar); it != std::end(parsedCigar); ++it){
+    cout << "iterting through parsed cigar coords " << it->first << ", " << it->second << std::endl;
     switch(it->first) 
       {
       case 'M':
 	while(it->second > 0){
+	  cout << "subjectPos, queryPos, it->second is " << subjectPos << ", " << queryPos_ << ", " << it->second << std::endl;
+	  cout << "traceback dimensions are " << tb.size() << ", " << tb[0].size();
 	  tb[queryPos_][subjectPos] = 1;
+	  cout << "value inside tb is " << tb[queryPos_][subjectPos] << std::endl;
 	  queryPos_++;
 	  subjectPos++;
 	  it->second--;
@@ -134,6 +162,7 @@ vector<vector<int> > Traceback::buildTB(Node * node){
 	}
       }
   }
+  cout << "setting query end pos to " << queryPos_ << std::endl;
   node->setQueryEnd(queryPos_);
   
   //cout << "printing out node " << node->getId() << "  offset is " << ga_->getNodeOffset(node) << endl;
