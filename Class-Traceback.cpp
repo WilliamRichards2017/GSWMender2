@@ -20,7 +20,7 @@ bool isCigarChar( char c ){
 
 Traceback::Traceback(GraphAlignment* ga, coords* c): ga_(ga), c_(c), queryPos_(0), query_(ga->getQuerySequence()){
   trimQuery();
-  formatQuery();
+  //formatQuery();
   vector<Node*> matchedNodes = ga->getMatchedNodes();
   cout << "got " << matchedNodes.size() << " matched nodes\n";
   for(auto it = std::begin(matchedNodes); it != std::end(matchedNodes); ++it) {
@@ -104,7 +104,9 @@ void Traceback::trimQuery(){
 
 
 vector<vector<int> > Traceback::buildTB(Node * node) {
-  vector<vector<int > > tb  = ArrayUtil::buildArray2D(c_->QE - c_->QS, node->getSequence().length());
+  // vector<vector<int > > tb  = ArrayUtil::buildArray2D(c_->QE - c_->QS, node->getSequence().length());
+  vector<vector<int > > tb  = ArrayUtil::buildArray2D(query_.length(), node->getSequence().length());
+
   vector<pair<char, int> > parsedCigar = parseCigar(ga_->getNodeCigar(node));
   int subjectPos = ga_->getNodeOffset(node);
 // cout << "parsed cigar, got node offset, built empty array\n";

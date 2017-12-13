@@ -2,27 +2,22 @@
 #include "Class-Traceback.h"
 #include "ArrayUtil.h"
 
-Pileup::Pileup(vector<Traceback> tbv) : tbv_(tbv){
+Pileup::Pileup(vector<Traceback> tbv, string ref) : tbv_(tbv), ref_(ref){
   cout << "inside pileup constructor\n";
   sumTracebacks();
 }
 
 void Pileup::printPileup(){
-  cout << "query is " << queries_[0] << std::endl;
+  cout << "ref is " << ref_ << std::endl;
   for(auto it = std::begin(pileup_); it != std::end(pileup_); ++ it){
     cout << "Printing out " << it->first->getId() << "  traceback dims: " << it->second.size() << ", " << it->second[0].size() << std::endl;
     //ArrayUtil::printArray2D(it->second);
-    ArrayUtil::printNode(it->first, it->second, queries_);
+    ArrayUtil::printNode(it->first, it->second, ref_);
   }
 }
 
 
 void Pileup::sumTracebacks(){
-  queries_.push_back(tbv_.front().getQuery());
-  queries_.push_back(tbv_.back().getQuery());
-
-
-  
   cout << "inside sum tracebacks\n";
   pileup_ = tbv_.back().getTracebackMap();
   tbv_.pop_back();

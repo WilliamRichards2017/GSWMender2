@@ -29,7 +29,7 @@ void ArrayUtil::printArray2D(vector<vector<int> > vec){
   cout << endl;
 }
 
-void ArrayUtil::printNode(Node * node, vector<vector<int> > vec, vector<string> queries){
+void ArrayUtil::printNode(Node * node, vector<vector<int> > vec, string query){
 
   std::string subect = node->getSequence();
   cout << termcolor::blue << termcolor::bold << "- " << termcolor::reset << " ";
@@ -39,7 +39,7 @@ void ArrayUtil::printNode(Node * node, vector<vector<int> > vec, vector<string> 
   cout << std::endl;
 
   for (int i = 0; i < vec.size(); i++){
-    cout  << termcolor::blue << termcolor::bold << queries[0][i]  <<  " |"  << termcolor::reset;
+    cout  << termcolor::blue << termcolor::bold << query[i]  <<  " |"  << termcolor::reset;
     for (int j = 0; j < vec[i].size(); j++){
       if(vec[i][j] >=10 ){
         cout << termcolor::red << termcolor::bold << vec[i][j] << termcolor::reset << " ";

@@ -6,14 +6,13 @@
 
 class Pileup {
  public:
-  Pileup(vector<Traceback>);
+  Pileup(vector<Traceback>, string);
   map<Node *, vector<vector<int> > > getPileup();
   void printPileup();
 
  private:
   void sumTracebacks();
-  string query_;
-  vector<string> queries_;
+  string ref_;
   map<Node *, vector<vector<int> > > pileup_;
   vector<Traceback> tbv_;
 
